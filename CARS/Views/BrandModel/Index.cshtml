@@ -8,17 +8,37 @@
 
 
 <div class="text-center" style="margin:30px 0">
-    <p><b>Maker list</b></p>
-    <select class="browser-default custom-select" id="Makers">
-        <option selected>All makers</option>
-        @foreach (Brand item in Model.AllBrands)
-        {
-            <option value="item.Id">@item.Name</option>
-        }
-    </select>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @Model.BrandName
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            @foreach (Brand brand in Model.AllBrands)
+            {
+                <a class="dropdown-item" asp-controller="BrandModel" asp-action="Index" asp-route-id="@brand.Id">@brand.Name</a>
+            }
+        </div>
+    </div>
 </div>
 
-
+@if (!Model.BrandName.Equals("All")){
+    <div class="container-fluid">
+        <form asp-action="CreateModel">
+            <div class="row">
+                <div class="col-2">
+                    <p>Add a @Model.BrandName car : </p>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    <!--<input asp-for="Name" class="form-control" />-->
+                </div>
+                <div class="col-2">
+                    <input type="submit" class="btn btn-primary text-white" value="Add"/>
+                </div>
+            </div>
+        </form>
+    </div>
+}
 
 <div class="p-4 border rounded text-center" style="margin:30px 0">
     <p><b>Model list</b></p>
