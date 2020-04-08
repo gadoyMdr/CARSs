@@ -125,6 +125,7 @@ namespace CARS.Controllers
         // GET: Models/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            Console.WriteLine("TEST");
             if (id == null)
             {
                 return NotFound();
@@ -137,8 +138,10 @@ namespace CARS.Controllers
             {
                 return NotFound();
             }
+            _context.CarModel.Remove(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("~/Controllers/BrandModel/Index", 0);
 
-            return View(model);
         }
 
         // POST: Models/Delete/5

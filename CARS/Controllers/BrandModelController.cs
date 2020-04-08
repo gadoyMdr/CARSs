@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CARS.Data;
 using CARS.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CARS.ViewModels
@@ -39,15 +40,84 @@ namespace CARS.ViewModels
             }
         }
 
-        public async Task<IActionResult> CreateModel(Model model)
+        public async Task<IActionResult> CreateModel(string name, int brand)
         {
+            Model car = new Model();
+            car.Name = name;
+            car.BrandId = brand;
+            _context.Add(car);
+            _context.SaveChanges();
+            return RedirectToAction("Index", new { brand });
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var model = await _context.CarModel.FindAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", model.BrandId);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveEdit(int id, [Bind("Id,Name,BrandId")] Model model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(model);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ModelExists(model.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", model.BrandId);
+            return View(nameof(Index));
+        }
+
+        private bool ModelExists(int id)
+        {
+            return _context.CarModel.Any(e => e.Id == id);
+        }
+
+        public ActionResult Delete(int id)
+        {
+
+            var model = _context.CarModel
+                .Include(m => m.Brand)
+                .FirstOrDefault(m => m.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            _context.CarModel.Remove(model);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Index(int? id)
@@ -57,11 +127,13 @@ namespace CARS.ViewModels
             {
                 mymodel.AllModels = GetModels(id.Value);
                 mymodel.BrandName = _context.Brand.FirstOrDefault(x => x.Id == id).Name;
+                mymodel.BrandId = id;
             }
             else
             {
                 mymodel.BrandName = "All";
                 mymodel.AllModels = GetModels();
+                mymodel.BrandId = 0;
             }
             mymodel.AllBrands = GetBrands();
             

@@ -29,8 +29,8 @@
                     <p>Add a @Model.BrandName car : </p>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    <!--<input asp-for="Name" class="form-control" />-->
+                    <input type="text" class="form-control" aria-label="Small" name="name" aria-describedby="inputGroup-sizing-sm">
+                    <input type="hidden" class="form-control" value="@Model.BrandId" name="brand" />
                 </div>
                 <div class="col-2">
                     <input type="submit" class="btn btn-primary text-white" value="Add"/>
