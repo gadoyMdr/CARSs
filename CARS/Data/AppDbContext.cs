@@ -14,7 +14,6 @@ namespace CARS.Data
         {
         }
 
-        public DbSet<CARS.Models.Vehicule> Vehicule { get; set; }
         public DbSet<CARS.Models.Step> Step { get; set; }
         public DbSet<CARS.Models.TechnicalControl> TechnicalControl { get; set; }
         public DbSet<CARS.Models.VehiculeType> VehiculeType { get; set; }

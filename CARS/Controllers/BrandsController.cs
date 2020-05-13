@@ -65,7 +65,7 @@ namespace CARS.Controllers
             return View(brand);
         }
 
-        // GET: Brands/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

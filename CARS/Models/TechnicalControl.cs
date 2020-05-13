@@ -17,8 +17,8 @@ namespace CARS.Models
 
         /*Foreign Keys*/
 
-        [ForeignKey("IdVehicule")]
-        public Vehicule Vehicule { get; set; }
-        public int IdVehicule { get; set; }
+        [ForeignKey("IdModel")]
+        public Model Model { get; set; }
+        public int IdModel { get; set; }
     }
 }

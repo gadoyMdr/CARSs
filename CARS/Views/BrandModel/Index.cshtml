@@ -23,17 +23,32 @@
 
 @if (!Model.BrandName.Equals("All")){
     <div class="container-fluid">
-        <form asp-action="CreateModel">
+        <form asp-action="">
             <div class="row">
                 <div class="col-2">
                     <p>Add a @Model.BrandName car : </p>
                 </div>
-                <div class="col-8">
+                <div class="col-7">
                     <input type="text" class="form-control" aria-label="Small" name="name" aria-describedby="inputGroup-sizing-sm">
+                    
                     <input type="hidden" class="form-control" value="@Model.BrandId" name="brand" />
                 </div>
+                <div class="col-1">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Type
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            @foreach (VehiculeType vehiculeType in Model.AllVehiculeTypes)
+                            {
+                                <a class="dropdown-item" asp-controller="BrandModel" asp-action="Index" asp-route-id="@vehiculeType.Id">@vehiculeType.Name</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-2">
-                    <input type="submit" class="btn btn-primary text-white" value="Add"/>
+                    <input type="submit" class="btn btn-primary text-white" value="Add" />
                 </div>
             </div>
         </form>

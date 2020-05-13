@@ -21,5 +21,9 @@ namespace CARS.Models
         [ForeignKey("BrandId")]
         public Brand Brand { get; set; }
         public int BrandId { get; set; }
+
+        [ForeignKey("VehiculeTypeId")]
+        public VehiculeType VehiculeType { get; set; }
+        public int VehiculeTypeId { get; set; }
     }
 }

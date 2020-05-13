@@ -40,11 +40,12 @@ namespace CARS.ViewModels
             }
         }
 
-        public async Task<IActionResult> CreateModel(string name, int brand)
+        public async Task<IActionResult> CreateModel(string name, int brand, int vehiculeType)
         {
             Model car = new Model();
             car.Name = name;
             car.BrandId = brand;
+            car.VehiculeTypeId = vehiculeType;
             _context.Add(car);
             _context.SaveChanges();
             return RedirectToAction("Index", new { brand });
@@ -135,6 +136,7 @@ namespace CARS.ViewModels
                 mymodel.AllModels = GetModels();
                 mymodel.BrandId = 0;
             }
+            mymodel.AllVehiculeTypes = _context.VehiculeType.ToList();
             mymodel.AllBrands = GetBrands();
             
             
